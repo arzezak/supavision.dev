@@ -45,8 +45,11 @@
         .feature-label {
           @apply text-sm font-semibold tracking-wide text-blue-600 uppercase dark:text-blue-400;
         }
-        .coming-soon-pill {
-          @apply rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-400 dark:bg-zinc-900 dark:text-zinc-600;
+        .btn-primary {
+          @apply rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500;
+        }
+        .btn-secondary {
+          @apply rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700;
         }
       }
     </style>
@@ -60,12 +63,20 @@
         </p>
 
         <div class="mt-10 flex flex-wrap justify-center gap-3">
-          <button type="button" disabled class="coming-soon-pill cursor-not-allowed">
-            Download for macOS — coming soon
-          </button>
-          <button type="button" disabled class="coming-soon-pill cursor-not-allowed">
-            Download for Linux — coming soon
-          </button>
+          <a
+            href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.5/supavision-0.0.5.dmg"
+            download
+            class="btn-primary"
+          >
+            Download for macOS
+          </a>
+          <a
+            href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.5/supavision-0.0.5.AppImage"
+            download
+            class="btn-secondary"
+          >
+            Download for Linux
+          </a>
         </div>
       </section>
 
