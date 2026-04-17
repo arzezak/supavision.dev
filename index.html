@@ -3,119 +3,400 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Supavision — review AI-generated code before it ships</title>
+    <title>Supavision — the review tool for Claude Code</title>
     <meta
       name="description"
-      content="Supavision is a desktop code review tool that shortens the feedback loop between AI-generated code and human review. Annotate diffs, export structured feedback."
+      content="Supavision is a desktop diff reviewer for Claude Code. Annotate changes before the commit, and your review is injected into the next Claude prompt — no manual wiring."
     />
-    <meta property="og:title" content="Supavision — review AI-generated code before it ships" />
+    <meta
+      property="og:title"
+      content="Supavision — the review tool for Claude Code"
+    />
     <meta
       property="og:description"
-      content="Desktop code review tool that shortens the feedback loop between AI-generated code and human review."
+      content="A desktop diff reviewer that shortens the Claude Code feedback loop. Questions land on the right line, and Claude picks them up on your next prompt."
     />
     <meta property="og:url" content="https://supavision.dev" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a1f1f" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/favicon-32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/assets/favicon.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/apple-touch-icon.png"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Geist:wght@300..500&family=JetBrains+Mono:wght@400&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] } } }
-      }
-    </script>
-    <style type="text/tailwindcss">
-      @layer base {
-        body {
-          font-feature-settings:
-            'cv02',
-            'cv03',
-            'cv04',
-            'cv11';
-        }
-      }
-      @layer components {
-        .feature-label {
-          @apply text-sm font-semibold tracking-wide text-blue-600 uppercase dark:text-blue-400;
-        }
-        .btn-primary {
-          @apply rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500;
-        }
-        .btn-secondary {
-          @apply rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-50">
-    <main class="mx-auto max-w-3xl px-6 py-20 sm:py-32">
-      <section class="text-center">
-        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Supavision</h1>
-        <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-          Review AI-generated code before it ships.
-        </p>
 
-        <div class="mt-10 flex flex-wrap justify-center gap-3">
-          <a
-            href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.dmg"
-            download
-            class="btn-primary"
-          >
-            Download for macOS
-          </a>
-          <a
-            href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.AppImage"
-            download
-            class="btn-secondary"
-          >
-            Download for Linux
-          </a>
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href="#top">
+          <img src="/assets/gem.png" alt="" />
+          <span class="name">Supa<em>vision</em></span>
+        </a>
+        <nav class="nav-right">
+          <a class="hide-sm" href="#chapters">Features</a>
+          <a class="hide-sm" href="#loop">Loop</a>
+          <a class="pill" href="#download">v0.0.7 ↓</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-grid">
+            <div class="hero-main">
+              <div class="eyebrow rise d1">
+                <span>A desktop reviewer for Claude Code</span>
+              </div>
+
+              <h1 class="rise d2">
+                <span class="frag">Catch</span>
+                <span class="frag"><em>slop</em></span>
+                <span class="frag">before</span>
+                <span class="frag">committing.</span>
+              </h1>
+
+              <p class="hero-lede rise d3">
+                Supavision is a desktop diff reviewer for Claude Code — built to
+                shorten the loop between <em>prompt</em> and <em>ship</em>.
+                Annotate changes line by line, and the review arrives inside
+                Claude the moment you return to the prompt.
+              </p>
+
+              <div class="cta-row rise d4" id="download">
+                <a
+                  class="btn btn-gold"
+                  href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.dmg"
+                  download
+                >
+                  Download for macOS
+                  <span class="arrow">↓</span>
+                </a>
+                <a
+                  class="btn btn-ghost"
+                  href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.AppImage"
+                  download
+                >
+                  Linux AppImage
+                  <span class="arrow">↓</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="hero-side rise d4">
+              <div class="gem-anchor">
+                <span
+                  class="gem-ring gem-ring--outer"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="gem-ring gem-ring--inner"
+                  aria-hidden="true"
+                ></span>
+                <span class="gem-tick gem-tick--t" aria-hidden="true"></span>
+                <span class="gem-tick gem-tick--b" aria-hidden="true"></span>
+                <span class="gem-tick gem-tick--l" aria-hidden="true"></span>
+                <span class="gem-tick gem-tick--r" aria-hidden="true"></span>
+                <div class="gem-tile">
+                  <img
+                    src="/assets/gem.png"
+                    alt="The Supavision mark — a faceted gold diamond on a teal halftone"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="mt-24 grid gap-10 sm:grid-cols-2">
-        <div>
-          <h2 class="feature-label">Diff viewer</h2>
-          <p class="mt-2 text-zinc-600 dark:text-zinc-400">
-            GitHub-style unified and side-by-side diffs with line numbers, color-coded changes, and
-            collapsible file sections.
-          </p>
-        </div>
-        <div>
-          <h2 class="feature-label">Annotations</h2>
-          <p class="mt-2 text-zinc-600 dark:text-zinc-400">
-            Click a line to comment, shift-click for ranges, edit and delete inline. File-level
-            annotations too.
-          </p>
-        </div>
-        <div>
-          <h2 class="feature-label">Review export</h2>
-          <p class="mt-2 text-zinc-600 dark:text-zinc-400">
-            Drafts auto-save as JSON; submit to promote to timestamped markdown your AI coding agent
-            can read directly.
-          </p>
-        </div>
-        <div>
-          <h2 class="feature-label">Git-native</h2>
-          <p class="mt-2 text-zinc-600 dark:text-zinc-400">
-            Works on any local repo. Switch worktrees, filter by git status, review uncommitted
-            changes before a PR exists.
-          </p>
+      <hr class="rule" />
+
+      <section class="manifesto">
+        <div class="wrap">
+          <div class="manifesto-grid">
+            <div class="section-label reveal">
+              The case<br />against slop
+              <span class="num">I.</span>
+            </div>
+            <div class="reveal">
+              <h2>
+                Agents ship code faster than&nbsp;<em>you can read it</em>.
+              </h2>
+              <p class="drop-cap">
+                The slop tax adds up in small increments: a dead helper here, a
+                missing relation there, a validation quietly deleted to make a
+                failing test green. None of them are dramatic on their own — and
+                none of them are caught by more prompting. The only thing that
+                scales is actually looking at the diff. Supavision is a tool for
+                doing that, precisely, before the commit, without the friction
+                of opening a pull request for every iteration with an agent.
+              </p>
+              <p class="pullquote">
+                Reviewing is where taste is applied. Supavision makes applying
+                it the path of least resistance.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <footer class="mt-24 border-t border-zinc-200 pt-8 text-center text-sm text-zinc-500 dark:border-zinc-800">
-        &copy; 2026 Ariel Rzezak
-      </footer>
+      <section class="showcase">
+        <div class="wrap">
+          <figure class="fig reveal">
+            <div class="fig-caption">
+              <span
+                ><span class="num">Fig. I</span> &nbsp;— &nbsp;A review in
+                progress</span
+              >
+              <span>Anchored annotations</span>
+            </div>
+            <div class="fig-frame">
+              <picture>
+                <source srcset="/assets/screenshot.webp" type="image/webp" />
+                <img
+                  src="/assets/screenshot.png"
+                  alt="Supavision reviewing a Rails diff, with inline annotations on a controller."
+                  width="2526"
+                  height="1564"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapters" id="chapters">
+        <div class="wrap">
+          <div class="chapters-head">
+            <div class="section-label reveal">
+              What's inside
+              <span class="num">II.</span>
+            </div>
+            <h2 class="reveal">
+              Five small decisions that&nbsp;<em>tighten the loop</em>.
+            </h2>
+          </div>
+
+          <article class="chapter">
+            <div class="chapter-num">
+              I
+              <small>Diff viewer</small>
+            </div>
+            <div>
+              <h3>Unified or side-by-side, your&nbsp;call.</h3>
+              <p>
+                A GitHub-style diff over anything git can see — staged,
+                unstaged, and untracked. Line numbers, color-coded hunks,
+                collapsible files, per-file reviewed checkboxes in the sidebar.
+                No PR required.
+              </p>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="chapter-num">
+              II
+              <small>Annotations</small>
+            </div>
+            <div>
+              <h3>Ask at the <em>right line</em>.</h3>
+              <p>
+                Click a line to comment. Shift-click to span a range. The file
+                header for notes that belong to the whole file. Edit inline,
+                delete inline. Questions arrive in Claude with their location
+                attached — not floating somewhere up in a chat buffer.
+              </p>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="chapter-num">
+              III
+              <small>Artifacts</small>
+            </div>
+            <div>
+              <h3>Reviews that are&nbsp;<em>files</em>, not&nbsp;vibes.</h3>
+              <p>
+                Drafts auto-save to
+                <code>.supavision/draft/</code> as JSON so nothing is lost. On
+                submit they get promoted to timestamped markdown in
+                <code>.supavision/pending/</code> — clean, structured, built for
+                an LLM to read straight off disk.
+              </p>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="chapter-num">
+              IV
+              <small>Hook</small>
+            </div>
+            <div>
+              <h3>One toggle. <em>No manual wiring.</em></h3>
+              <p>
+                From Settings → Repository, flip on the Claude Code hook.
+                Supavision registers a <code>UserPromptSubmit</code> hook into
+                the project, so the next time you press enter in Claude, any
+                pending review rides along. Read reviews move to
+                <code>.supavision/done/</code> automatically. Per-project, zero
+                config.
+              </p>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="chapter-num">
+              V
+              <small>Git</small>
+            </div>
+            <div>
+              <h3>Built around your&nbsp;<em>worktrees</em>.</h3>
+              <p>
+                Switch between worktrees from the top bar. Annotations stay
+                pinned per worktree, so a review on a feature branch doesn't
+                leak into main. Works on any local repo — no accounts, no
+                server, no remotes required.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="loop">
+        <div class="wrap">
+          <div class="loop-head">
+            <div class="section-label reveal">
+              Loop
+              <span class="num">III.</span>
+            </div>
+            <div class="reveal">
+              <h2>How the review gets&nbsp;<em>back into Claude</em>.</h2>
+              <p>
+                Enable the hook once per project. Supavision installs a
+                <code>UserPromptSubmit</code> hook into the repo; from then on,
+                any pending review is fed to Claude the instant you submit your
+                next prompt. You don't import anything. You don't paste
+                anything. You just keep working.
+              </p>
+            </div>
+          </div>
+
+          <div class="steps">
+            <div class="step reveal">
+              <div class="n">Step 01</div>
+              <h4>Claude <em>writes</em>.</h4>
+              <p>
+                A change lands in your working tree — uncommitted, unreviewed,
+                unshipped.
+              </p>
+            </div>
+            <div class="step reveal">
+              <div class="n">Step 02</div>
+              <h4>You <em>read</em>.</h4>
+              <p>
+                Open the repo in Supavision. Click lines. Leave questions where
+                they belong.
+              </p>
+            </div>
+            <div class="step reveal">
+              <div class="n">Step 03</div>
+              <h4>Submit.</h4>
+              <p>
+                The review is promoted to markdown under
+                <code>.supavision/pending/</code>.
+              </p>
+            </div>
+            <div class="step reveal">
+              <div class="n">Step 04</div>
+              <h4>Claude <em>reads back</em>.</h4>
+              <p>
+                Next prompt in Claude Code — the hook injects the review, then
+                files it under <code>done/</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="wrap">
+          <img class="closing-gem" src="/assets/gem.png" alt="" />
+          <h2>Stop reviewing&nbsp;<em>in the chat</em>.</h2>
+          <p>
+            Pull the diff into a tool built for one thing: a fast, precise human
+            read before the commit.
+          </p>
+          <div class="cta-row">
+            <a
+              class="btn btn-gold"
+              href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.dmg"
+              download
+            >
+              Download for macOS
+              <span class="arrow">↓</span>
+            </a>
+            <a
+              class="btn btn-ghost"
+              href="https://github.com/arzezak/supavision.dev/releases/download/v0.0.7/supavision-0.0.7.AppImage"
+              download
+            >
+              Linux AppImage
+              <span class="arrow">↓</span>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <span>© 2026</span>
+        <span>Supavision · v0.0.7</span>
+      </div>
+    </footer>
+
+    <script>
+      document.documentElement.classList.add("js");
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in");
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.14, rootMargin: "0px 0px -60px 0px" },
+      );
+      document
+        .querySelectorAll(".reveal, .chapter")
+        .forEach((el) => io.observe(el));
+    </script>
   </body>
 </html>
