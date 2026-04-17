@@ -187,7 +187,10 @@ a:hover {
 .hero {
   padding: var(--pad) 0;
   position: relative;
-  overflow: hidden;
+  /* clip (not hidden) so the section isn't a scroll container — otherwise
+     fragment navigation like /#download scrolls the hero's internal content
+     instead of only the page. */
+  overflow: clip;
 }
 
 .eyebrow {
