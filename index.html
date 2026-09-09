@@ -55,7 +55,7 @@
           href="https://github.com/arzezak/supavision.dev/releases/latest/download/Supavision.zip"
           data-version-href="dmg"
           download
-          ><span data-version-text>v0.0.22</span> ↓</a
+          ><span data-version-text>v1.0.2</span> ↓</a
         >
       </div>
     </header>
@@ -86,6 +86,49 @@
             Download for Mac
             <span>↓</span>
           </a>
+        </div>
+      </section>
+
+      <section class="facts" id="how-it-works">
+        <div class="wrap">
+          <h2>What it touches</h2>
+          <p class="facts-lede">
+            Everything runs on your Mac. No account, no telemetry.
+          </p>
+
+          <dl>
+            <div>
+              <dt><code>~/.local/bin/supavision</code></dt>
+              <dd>
+                A shell script that opens the app. Written once, and never
+                over a file that is not ours.
+              </dd>
+            </div>
+
+            <div>
+              <dt><code>~/.claude/sessions</code></dt>
+              <dd>
+                Read only, to find your running sessions and deliver the
+                review over their socket. No hooks, no skills, no settings
+                changed.
+              </dd>
+            </div>
+
+            <div>
+              <dt><code>&lt;repo&gt;/.supavision/</code></dt>
+              <dd>
+                Drafts and reviews. Excluded from git, so it never shows in a
+                diff.
+              </dd>
+            </div>
+
+            <div>
+              <dt>Network</dt>
+              <dd>
+                The update check, from GitHub releases, signed. Nothing else.
+              </dd>
+            </div>
+          </dl>
         </div>
       </section>
     </main>
