@@ -1,0 +1,33 @@
+name: Update version label
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Write the release tag into index.html
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          sed -i -E "s|(data-version-text>)[^<]*|\1${TAG}|" index.html
+
+      - name: Commit and push
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet && exit 0
+          git commit -am "Bump version label to ${TAG}"
+          git push
