@@ -2,4 +2,4 @@
 
 Source for https://supavision.dev — the landing page for [Supavision](https://github.com/arzezak/Supavision), a desktop code review tool for AI-generated code.
 
-Static single-page site. No build step: `index.html` + `styles.css` + `CNAME` for the custom domain. GitHub Pages serves it from `main`.
+Static single-page site. No build step: `index.html` + `CNAME` for the custom domain. GitHub Pages serves it from `main`.
